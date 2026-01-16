@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>永州爱眼城瞳高测量工具</title>
     <style>
         :root {
@@ -23,76 +23,61 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
         }
         
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background-color: var(--bg-color);
             color: var(--text-color);
             padding: 10px;
             user-select: none;
             overflow-x: hidden;
+            touch-action: manipulation;
         }
         
         .container {
-            max-width: 1920px;
+            max-width: 1200px;
             margin: 0 auto;
-            padding: 20px;
+            padding: 15px;
             background: white;
             border-radius: var(--radius);
             box-shadow: var(--shadow);
-            width: 100%;
         }
         
         .header {
             text-align: center;
             margin-bottom: 20px;
-            padding-bottom: 20px;
+            padding-bottom: 15px;
             border-bottom: 1px solid var(--border-color);
         }
         
         .header h1 {
             color: var(--primary-color);
-            font-size: 2.0rem;
+            font-size: 1.8rem;
             margin-bottom: 8px;
         }
         
         .header p {
             color: #666;
-            font-size: 1.2rem;
-        }
-        
-        .input-group {
-            margin: 15px 0;
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            align-items: center;
-        }
-        
-        input[type="file"] {
-            padding: 10px;
-            border: 2px dashed var(--border-color);
-            border-radius: var(--radius);
-            width: 100%;
-            background: transparent;
-            cursor: pointer;
+            font-size: 1.1rem;
         }
         
         input[type="number"] {
-            padding: 10px 12px;
-            border: 2px solid var(--primary-color);
+            padding: 8px 10px;
+            border: 2px solid var(--);
             border-radius: var(--radius);
-            width: 200px;
-            max-width: 100%;
-            font-size: 1rem;
+            width: 100%;
+            font-size: 0.9rem;
+            -webkit-appearance: none;
+            appearance: none;
         }
         
         button {
             background-color: var(--primary-color);
             color: white;
             border: none;
-            padding: 10px 20px;
+            padding: 8px 12px;
             border-radius: var(--radius);
             cursor: pointer;
             transition: var(--transition);
@@ -100,33 +85,37 @@
             font-size: 0.9rem;
             display: flex;
             align-items: center;
-            gap: 5px;
+            justify-content: center;
+            gap: 4px;
+            min-height: 36px;
         }
         
-        button:hover {
+        button:hover, button:active {
             filter: brightness(0.9);
-            transform: translateY(-1px);
         }
         
         button:disabled {
             background-color: #ccc;
             cursor: not-allowed;
-            transform: none;
         }
         
         .status-box {
-            padding: 15px;
+            padding: 10px 12px;
             background: #f8f9fa;
             border-radius: var(--radius);
-            margin: 15px 0;
             border-left: 4px solid var(--);
-            font-size: 0.95rem;
+            font-size: 0.9rem;
+            min-height: 45px;
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
         
         .result-box {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
+            grid-template-columns: 1fr;
+            gap: 15px;
             margin-top: 20px;
         }
         
@@ -154,78 +143,98 @@
         .final-result {
             margin-top: 20px;
             padding: 20px;
-            background: linear-gradient(135deg, var(--primary-color), #3a7bc8);
+            background: linear-gradient(135deg, var(--), #3a7bc8);
             color: white;
             border-radius: var(--radius);
             text-align: center;
             font-size: 1.1rem;
         }
         
-        .action-buttons {
-            display: flex;
-            gap: 10px;
+        .control-panel {
+            background: #f8f9fa;
+            padding: 12px;
+            border-radius: var(--radius);
             margin: 15px 0;
-            flex-wrap: wrap;
-            justify-content: center;
+            border-left: 4px solid var(--);
         }
         
-        .controls-section {
+        .control-row {
             display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 15px;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
-        
-        .status-section {
-            flex: 1;
-            min-width: 250px;
-        }
-        
-        .control-section {
-            display: flex;
-            align-items: flex-start;
+            flex-direction: row;
             gap: 10px;
-            min-width: 250px;
-            justify-content: flex-end;
+            align-items: stretch;
+        }
+        
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        
+        /* 调整各组的宽度比例 */
+        .control-group:nth-child(1) { /* 操作步骤 */
+            flex: 4;
+        }
+        
+        .control-group:nth-child(2) { /* 缩放控制 */
+            flex: 2;
+        }
+        
+        .control-group:nth-child(3) { /* 比例设定 */
+            flex: 3;
+        }
+        
+        .control-group:nth-child(4) { /* 撤销操作 */
+            flex: 1;
+        }
+        
+        .control-label {
+            font-weight: bold;
+            color: var(--primary-color);
+            white-space: nowrap;
+            font-size: 0.85rem;
+            margin-bottom: 2px;
+        }
+        
+        .control-content {
+            flex: 1;
         }
         
         .zoom-section {
             display: flex;
             align-items: center;
-            gap: 5px;
-            background: #f8f9fa;
-            padding: 5px;
+            gap: 3px;
+            background: white;
+            padding: 3px;
             border-radius: var(--radius);
+            justify-content: center;
+            border: 1px solid var(--border-color);
+            height: 45px;
         }
         
         .zoom-btn {
-            width: 35px;
-            height: 35px;
+            width: 30px;
+            height: 30px;
             padding: 0;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 16px;
+            font-size: 14px;
             background: var(--primary-color);
             color: white;
             border: none;
-            border-radius: 4px;
+            border-radius: 3px;
             cursor: pointer;
             transition: var(--transition);
-        }
-        
-        .zoom-btn:hover {
-            background: #3a7bc8;
+            min-height: auto;
         }
         
         .zoom-display {
-            min-width: 60px;
+            min-width: 50px;
             text-align: center;
-            font-size: 14px;
+            font-size: 12px;
             font-weight: 600;
-            padding: 0 5px;
+            padding: 0 3px;
         }
         
         canvas {
@@ -240,6 +249,7 @@
             width: auto;
             height: auto;
             transition: var(--transition);
+            touch-action: none;
         }
         
         .canvas-container {
@@ -259,12 +269,12 @@
             top: 10px;
             left: 10px;
             background: rgba(255, 255, 255, 0.95);
-            padding: 10px 15px;
+            padding: 8px 12px;
             border-radius: var(--radius);
             z-index: 10;
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 6px;
             box-shadow: var(--shadow);
         }
         
@@ -272,7 +282,7 @@
             position: absolute;
             background: rgba(0, 0, 0, 0.7);
             color: white;
-            padding: 5px 10px;
+            padding: 6px 10px;
             border-radius: 4px;
             font-size: 12px;
             z-index: 10;
@@ -302,9 +312,10 @@
             color: #666;
             transition: var(--transition);
             cursor: pointer;
+            min-height: 200px;
         }
         
-        .upload-area:hover {
+        .upload-area:hover, .upload-area:active {
             border-color: var(--primary-color);
             background-color: #eef7ff;
         }
@@ -317,26 +328,7 @@
         
         .upload-text {
             margin-top: 10px;
-            font-size: 14px;
-        }
-        
-        .calibration-section {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 15px;
-            padding: 15px;
-            background: #f8f9fa;
-            border-radius: var(--radius);
-            border-left: 4px solid var(--);
-            flex-wrap: wrap;
-        }
-        
-        .calibration-section h3 {
-            margin: 0;
-            color: var(--primary-color);
-            white-space: nowrap;
-            font-size: 1.1rem;
+            font-size: 16px;
         }
         
         .instructions {
@@ -344,7 +336,7 @@
             padding: 15px;
             border-radius: var(--radius);
             margin: 15px 0;
-            font-size: 0.9rem;
+            font-size: 1rem;
         }
         
         .instructions h4 {
@@ -357,138 +349,107 @@
         }
         
         .instructions li {
-            margin-bottom: 5px;
+            margin-bottom: 8px;
+            line-height: 1.4;
         }
         
-        /* 新增的统一控制面板样式 */
-        .control-panel {
-            background: #f8f9fa;
-            padding: 15px;
-            border-radius: var(--radius);
-            margin: 15px 0;
-            border-left: 4px solid var(--);
-        }
-        
-        .panel-row {
+        .calibration-input-group {
             display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-            margin-bottom: 10px;
+            gap: 5px;
         }
         
-        .panel-item {
+        .calibration-input-group input {
+            flex: 1;
+        }
+        
+        .calibration-input-group button {
+            flex: 0 0 auto;
+            width: 90px;
+        }
+        
+        .scale-info {
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            gap: 8px;
-            min-width: 200px;
+            padding: 6px 10px;
+            background: white;
+            border-radius: var(--radius);
+            border: 1px solid var(--border-color);
+            margin-top: 6px;
         }
         
-        .panel-label {
+        .scale-label {
             font-weight: bold;
-            color: var(--);
+            color: var(--text-color);
+            font-size: 0.85rem;
+        }
+        
+        .scale-value {
+            font-weight: bold;
+            color: var(--primary-color);
+            font-size: 0.85rem;
             white-space: nowrap;
         }
         
-        .panel-content {
-            flex: 1;
-            min-width: 150px;
-        }
-        
-        .panel-actions {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-        
-        /* 返回主页按钮样式 */
-        .back-to-home {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background-color: var(--primary-color);
-            color: white;
-            text-decoration: none;
-            padding: 10px 15px;
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            z-index: 1000;
-            font-size: 0.9rem;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            transition: var(--transition);
-        }
-        
-        .back-to-home:hover {
-            filter: brightness(0.9);
-            transform: translateY(-2px);
-        }
-        
+        /* 移动端优化 */
         @media (max-width: 768px) {
             .container {
                 padding: 10px;
+                max-width: 100%;
             }
             
             .header h1 {
                 font-size: 1.4rem;
             }
             
-            .controls-section {
+            .header p {
+                font-size: 1rem;
+            }
+            
+            .control-row {
                 flex-direction: column;
-                align-items: stretch;
+                gap: 12px;
             }
             
-            .status-section, .control-section {
-                width: 100%;
-                min-width: auto;
-            }
-            
-            .control-section {
-                justify-content: space-between;
-                flex-wrap: wrap;
-            }
-            
-            .zoom-section {
-                order: -1;
-                justify-content: center;
+            .control-group {
                 width: 100%;
             }
             
-            .result-box {
-                grid-template-columns: 1fr;
-            }
-            
-            input[type="number"] {
-                width: 100%;
-            }
-            
-            .calibration-section {
+            .calibration-input-group {
                 flex-direction: column;
-                align-items: stretch;
             }
             
-            .action-buttons {
-                justify-content: flex-start;
+            .calibration-input-group button {
+                width: 100%;
+            }
+            
+            button {
+                padding: 10px 12px;
+                font-size: 0.9rem;
+                min-height: 40px;
+            }
+            
+            .zoom-btn {
+                width: 35px;
+                height: 35px;
+                font-size: 16px;
+            }
+            
+            .zoom-display {
+                min-width: 60px;
+            }
+            
+            .value {
+                font-size: 22px;
+            }
+            
+            .status-box {
+                font-size: 0.9rem;
+                min-height: 50px;
             }
             
             canvas {
                 max-height: 50vh;
-            }
-            
-            .panel-row {
-                flex-direction: column;
-                gap: 10px;
-            }
-            
-            .panel-item {
-                min-width: auto;
-            }
-            
-            .back-to-home {
-                top: 10px;
-                right: 10px;
-                padding: 8px 12px;
-                font-size: 0.8rem;
             }
         }
         
@@ -498,42 +459,48 @@
             }
             
             button {
-                padding: 8px 12px;
-                font-size: 0.8rem;
-            }
-            
-            .zoom-btn {
-                width: 30px;
-                height: 30px;
-                font-size: 14px;
+                padding: 8px 10px;
+                font-size: 0.85rem;
+                min-height: 36px;
             }
             
             .value {
                 font-size: 20px;
             }
+            
+            .status-box {
+                font-size: 0.85rem;
+            }
+        }
+        
+        /* 隐藏的文件输入框 */
+        .upload-hidden {
+            display: none;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>👓 永 州 爱 眼 城 瞳 高 测 量 工 具</h1>
+            <h1>👓 永州爱眼城瞳高测量工具</h1>
             <p>精确测量双眼瞳高，专业验光配镜辅助工具</p>
         </div>
         
-        <!-- 统一控制面板 -->
+        <!-- 统一控制面板 - 单行布局 -->
         <div class="control-panel">
-            <div class="panel-row">
-                <div class="panel-item">
-                    <span class="panel-label"> 操作步骤：</span>
-                    <div class="panel-content">
+            <div class="control-row">
+                <!-- 操作步骤 -->
+                <div class="control-group">
+                    <div class="control-label">操作步骤：</div>
+                    <div class="control-content">
                         <div class="status-box" id="status">请上传正面眼镜佩戴照片</div>
                     </div>
                 </div>
                 
-                <div class="panel-item">
-                    <span class="panel-label"> 缩放控制：</span>
-                    <div class="panel-content">
+                <!-- 缩放控制 -->
+                <div class="control-group">
+                    <div class="control-label">缩放控制：</div>
+                    <div class="control-content">
                         <div class="zoom-section">
                             <button class="zoom-btn" id="zoomOut" title="缩小">-</button>
                             <div class="zoom-display" id="zoomLevel">100%</div>
@@ -543,35 +510,26 @@
                     </div>
                 </div>
                 
-                <div class="panel-item">
-                    <span class="panel-label"> 撤销操作：</span>
-                    <div class="panel-content">
-                        <button id="undoButton" class="warning-btn" disabled title="撤销上一步操作">返回上一步</button>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="panel-row">
-                <div class="panel-item">
-                    <span class="panel-label"> 比例标定：</span>
-                    <div class="panel-content">
-                        <div class="input-group" style="margin: 0;">
-                            <input type="number" id="actualWidth" step="0.1" placeholder="镜框实际宽度（毫米）" min="0" max="200">
-                            <button id="calculateScale" class="success-btn">计算比例</button>
-                            <div style="color: var(--text-color);">
-                                 当前比例：<span id="scaleResult">0</span> mm/像素
-                            </div>
+                <!-- 比例设定 -->
+                <div class="control-group">
+                    <div class="control-label">比例设定：</div>
+                    <div class="control-content">
+                        <div class="calibration-input-group">
+                            <input type="number" id="actualWidth" step="0.1" placeholder="镜框宽度(mm)" min="0" max="200">
+                            <button id="calculateScale">计算比例</button>
+                        </div>
+                        <div class="scale-info">
+                            <span class="scale-label">当前比例：</span>
+                            <span class="scale-value" id="scaleResult">0 mm/像素</span>
                         </div>
                     </div>
                 </div>
                 
-                <div class="panel-item">
-                    <span class="panel-label"> 操作:</span>
-                    <div class="panel-content">
-                        <div class="panel-actions">
-                            <button id="resetAll" class="danger-btn"> 全部重置</button>
-                            <button id="printResults" class="secondary-btn" disabled> 打印结果</button>
-                        </div>
+                <!-- 撤销操作 -->
+                <div class="control-group">
+                    <div class="control-label">撤销操作：</div>
+                    <div class="control-content">
+                        <button id="undoButton" disabled title="撤销上一步操作" style="height: 45px; width: 100%;">返回上一步</button>
                     </div>
                 </div>
             </div>
@@ -580,8 +538,8 @@
         <!-- 上传区域 -->
         <div id="uploadArea" class="upload-area">
             <div class="upload-icon">📷</div>
-            <div style="margin-bottom: 15px;">点击或拖拽上传照片</div>
-            <input type="file" id="imageUpload" accept="image/*" class="upload-hidden">
+            <div style="margin-bottom: 15px;">点击拍照或上传照片</div>
+            <input type="file" id="imageUpload" accept="image/*" class="upload-hidden" capture="environment">
             <div class="upload-text">支持 JPG、PNG 格式，推荐分辨率 1920x1080 或更高</div>
         </div>
         
@@ -589,10 +547,10 @@
         <div class="canvas-container">
             <div class="canvas-wrapper">
                 <canvas id="canvas" style="display: none;"></canvas>
-                <div class="drag-hint" id="dragHint" style="display: none;">🖱️ 拖拽可移动图片</div>
-                <div class="precision-hint" id="precisionHint" style="display: none;">🔍 放大后点击更精准</div>
+                <div class="drag-hint" id="dragHint" style="display: none;">拖拽可移动图片</div>
+                <div class="precision-hint" id="precisionHint" style="display: none;">放大后点击更精准</div>
                 <div class="canvas-overlay" id="canvasOverlay" style="display: none;">
-                    <button id="reuploadButton" class="danger-btn">
+                    <button id="reuploadButton">
                         🔄 重新上传
                     </button>
                 </div>
@@ -616,40 +574,11 @@
         <div class="instructions">
             <h4>📋 使用说明</h4>
             <ol>
-                <li><strong>上传照片：</strong>点击上传区域或直接拖拽照片到上传区域，上传一张清晰的正面眼镜佩戴照片</li>
+                <li><strong>上传照片：</strong>点击上传区域拍照或上传一张清晰的正面眼镜佩戴照片</li>
                 <li><strong>标定比例：</strong>先点击镜框左边缘，再点击镜框右边缘，然后输入镜框实际宽度（毫米），点击"计算比例"</li>
                 <li><strong>测量瞳高：</strong>依次点击右眼瞳孔中心、右眼镜框下缘、左眼瞳孔中心、左眼镜框下缘</li>
                 <li><strong>查看结果：</strong>系统会自动计算并显示双眼瞳高及差值</li>
-                <li><strong>操作技巧：</strong>使用鼠标滚轮可放大缩小图片，放大后点击标记点更精准；点击标记点可拖动调整位置</li>
-                <li><strong>注意事项：</strong>确保照片清晰，眼镜佩戴端正，面部正对镜头，避免角度倾斜影响测量精度</li>
-            </ol>
-        </div>
-    </div>
-
-    <!-- 返回主页按钮 -->
-    <a href="index.html" class="back-to-home" target="_self">🏠 返回主页</a>
-
-    <!-- 打印专用模板 -->
-    <div id="printTemplate" style="display: none;">
-        <div class="print-header">
-            <h1>永州爱眼城瞳高测量报告</h1>
-            <p>测量时间: <span id="printTime"></span></p>
-        </div>
-        <div class="print-canvas-container">
-            <canvas id="printCanvas"></canvas>
-        </div>
-        <div class="print-results">
-            <h3>测量结果</h3>
-            <div id="printResultsContent"></div>
-        </div>
-        <div class="print-instructions">
-            <h3>使用说明</h3>
-            <ol>
-                <li><strong>上传照片：</strong>点击上传区域或直接拖拽照片到上传区域，上传一张清晰的正面眼镜佩戴照片</li>
-                <li><strong>标定比例：</strong>先点击镜框左边缘，再点击镜框右边缘，然后输入镜框实际宽度（毫米），点击"计算比例"</li>
-                <li><strong>测量瞳高：</strong>依次点击右眼瞳孔中心、右眼镜框下缘、左眼瞳孔中心、左眼镜框下缘</li>
-                <li><strong>查看结果：</strong>系统会自动计算并显示双眼瞳高及差值</li>
-                <li><strong>操作技巧：</strong>使用鼠标滚轮可放大缩小图片，放大后点击标记点更精准；点击标记点可拖动调整位置</li>
+                <li><strong>操作技巧：</strong>使用缩放按钮可放大缩小图片，放大后点击标记点更精准；点击标记点可拖动调整位置</li>
                 <li><strong>注意事项：</strong>确保照片清晰，眼镜佩戴端正，面部正对镜头，避免角度倾斜影响测量精度</li>
             </ol>
         </div>
@@ -662,7 +591,6 @@ const Elements = {
     status: document.getElementById('status'),
     undoButton: document.getElementById('undoButton'),
     imageUpload: document.getElementById('imageUpload'),
-    uploadButton: document.getElementById('uploadButton'),
     uploadArea: document.getElementById('uploadArea'),
     reuploadButton: document.getElementById('reuploadButton'),
     actualWidth: document.getElementById('actualWidth'),
@@ -677,9 +605,7 @@ const Elements = {
     dragHint: document.getElementById('dragHint'),
     precisionHint: document.getElementById('precisionHint'),
     canvasOverlay: document.getElementById('canvasOverlay'),
-    measurementSection: document.getElementById('measurementSection'),
-    resetAll: document.getElementById('resetAll'),
-    printResults: document.getElementById('printResults')
+    measurementSection: document.getElementById('measurementSection')
 };
 
 const ctx = Elements.canvas.getContext('2d');
@@ -749,10 +675,10 @@ function updateCanvasRect() {
     canvasScaleY = Elements.canvas.height / canvasRect.height;
 }
 
-// 将鼠标事件坐标转换为画布内部坐标
-function eventToCanvasCoordinates(clientX, clientY) {
-    const x = clientX - canvasRect.left;
-    const y = clientY - canvasRect.top;
+// 将触摸事件坐标转换为画布内部坐标
+function touchToCanvasCoordinates(touchX, touchY) {
+    const x = touchX - canvasRect.left;
+    const y = touchY - canvasRect.top;
     
     const canvasX = x * canvasScaleX;
     const canvasY = y * canvasScaleY;
@@ -818,7 +744,7 @@ const ZoomManager = {
 // 用户界面管理
 const UI = {
     update: () => {
-        Elements.scaleResult.textContent = currentState.scale ? currentState.scale.toFixed(4) : '0';
+        Elements.scaleResult.textContent = currentState.scale ? currentState.scale.toFixed(4) + ' mm/像素' : '0 mm/像素';
         
         if (currentState.scale) {
             Elements.singleValue.textContent = '--';
@@ -854,7 +780,6 @@ const UI = {
                 } else {
                     status = '✅ 测量完成，查看下方结果';
                     Elements.measurementSection.style.display = 'block';
-                    Elements.printResults.disabled = false;
                 }
             }
         }
@@ -1068,8 +993,19 @@ const EventHandlers = {
     },
     
     handleCanvasClick: (e) => {
+        e.preventDefault();
         updateCanvasRect();
-        const canvasCoords = eventToCanvasCoordinates(e.clientX, e.clientY);
+        let clientX, clientY;
+        
+        if (e.type === 'touchstart') {
+            clientX = e.touches[0].clientX;
+            clientY = e.touches[0].clientY;
+        } else {
+            clientX = e.clientX;
+            clientY = e.clientY;
+        }
+        
+        const canvasCoords = touchToCanvasCoordinates(clientX, clientY);
         
         if (isDragging && currentState.selectedMarker) return;
         
@@ -1110,8 +1046,19 @@ const EventHandlers = {
     },
     
     handleDragStart: (e) => {
+        e.preventDefault();
         updateCanvasRect();
-        const canvasCoords = eventToCanvasCoordinates(e.clientX, e.clientY);
+        let clientX, clientY;
+        
+        if (e.type === 'touchstart') {
+            clientX = e.touches[0].clientX;
+            clientY = e.touches[0].clientY;
+        } else {
+            clientX = e.clientX;
+            clientY = e.clientY;
+        }
+        
+        const canvasCoords = touchToCanvasCoordinates(clientX, clientY);
         
         const clickedMarker = Marker.getMarkerAtPosition(canvasCoords.x, canvasCoords.y);
         if (clickedMarker) {
@@ -1131,16 +1078,29 @@ const EventHandlers = {
             }
         } else {
             isDragging = true;
-            lastX = e.clientX;
-            lastY = e.clientY;
+            lastX = clientX;
+            lastY = clientY;
             Elements.canvas.style.cursor = 'grabbing';
         }
     },
     
     handleDragMove: (e) => {
+        e.preventDefault();
+        if (!isDragging && !currentState.selectedMarker) return;
+        
+        let clientX, clientY;
+        
+        if (e.type === 'touchmove') {
+            clientX = e.touches[0].clientX;
+            clientY = e.touches[0].clientY;
+        } else {
+            clientX = e.clientX;
+            clientY = e.clientY;
+        }
+        
         if (currentState.selectedMarker) {
             updateCanvasRect();
-            const canvasCoords = eventToCanvasCoordinates(e.clientX, e.clientY);
+            const canvasCoords = touchToCanvasCoordinates(clientX, clientY);
             const worldPos = ZoomManager.screenToWorld(canvasCoords.x, canvasCoords.y);
             
             const marker = currentState.selectedMarker;
@@ -1161,32 +1121,24 @@ const EventHandlers = {
             
             Marker.drawAll();
         } else if (isDragging) {
-            const deltaX = e.clientX - lastX;
-            const deltaY = e.clientY - lastY;
+            const deltaX = clientX - lastX;
+            const deltaY = clientY - lastY;
             
             offsetX += deltaX;
             offsetY += deltaY;
             
-            lastX = e.clientX;
-            lastY = e.clientY;
+            lastX = clientX;
+            lastY = clientY;
             
             Marker.drawAll();
         }
     },
     
-    handleDragEnd: () => {
+    handleDragEnd: (e) => {
+        e.preventDefault();
         currentState.selectedMarker = null;
         isDragging = false;
         Elements.canvas.style.cursor = 'crosshair';
-    },
-    
-    handleWheel: (e) => {
-        e.preventDefault();
-        updateCanvasRect();
-        const canvasCoords = eventToCanvasCoordinates(e.clientX, e.clientY);
-        
-        const delta = e.deltaY > 0 ? 0.9 : 1.1;
-        ZoomManager.setZoom(zoom * delta, canvasCoords.x, canvasCoords.y);
     },
     
     handleReupload: () => {
@@ -1194,198 +1146,9 @@ const EventHandlers = {
         Elements.canvas.style.display = 'none';
         Elements.canvasOverlay.style.display = 'none';
         Elements.measurementSection.style.display = 'none';
-        Elements.printResults.disabled = true;
         Elements.actualWidth.value = '';
         StateManager.resetState();
         UI.update();
-    },
-    
-    handleResetAll: () => {
-        if (confirm('确定要重置所有数据吗？此操作不可撤销。')) {
-            EventHandlers.handleReupload();
-        }
-    },
-    
-    handlePrintResults: () => {
-        // 创建打印页面
-        const printWindow = window.open('', '_blank');
-        
-        // 获取当前时间
-        const now = new Date();
-        const timeString = now.toLocaleString('zh-CN');
-        
-        // 构建打印页面内容
-        let printContent = `
-        <html>
-        <head>
-            <title>眼视光报告</title>
-            <style>
-                body { font-family: Arial, sans-serif; margin: 20px; }
-                .print-header { text-align: center; margin-bottom: 30px; }
-                .print-header h1 { color: #4a90e2; margin-bottom: 10px; }
-                .print-canvas-container { text-align: center; margin: 20px 0; }
-                canvas { border: 1px solid #ccc; max-width: 100%; }
-                .print-results { margin-top: 30px; }
-                .print-results h3 { color: #4a90e2; margin-bottom: 15px; }
-                .final-result { background: linear-gradient(135deg, #4a90e2, #3a7bc8); color: white; padding: 20px; border-radius: 8px; text-align: center; }
-                .final-result div { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
-                .final-result div > div { background: rgba(255,255,255,0.2); padding: 10px; border-radius: 5px; }
-                .print-instructions { margin-top: 30px; }
-                .print-instructions h3 { color: #4a90e2; margin-bottom: 15px; }
-                .print-instructions ol { padding-left: 20px; }
-                .print-instructions li { margin-bottom: 5px; }
-            </style>
-        </head>
-        <body>
-            <div class="print-header">
-                <h1>永州爱眼城瞳高测量报告</h1>
-                <p>测量时间: ${timeString}</p>
-            </div>
-            <div class="print-canvas-container">
-                <canvas id="printCanvas" width="${Elements.canvas.width}" height="${Elements.canvas.height}"></canvas>
-            </div>
-            <div class="print-results">
-                <h3>测量结果</h3>
-                <div class="final-result">${Elements.finalResult.innerHTML}</div>
-            </div>
-            <div class="print-instructions">
-                <h3>使用说明</h3>
-                <ol>
-                    <li><strong>上传照片：</strong>点击上传区域或直接拖拽照片到上传区域，上传一张清晰的正面眼镜佩戴照片</li>
-                    <li><strong>标定比例：</strong>先点击镜框左边缘，再点击镜框右边缘，然后输入镜框实际宽度（毫米），点击"计算比例"</li>
-                    <li><strong>测量瞳高：</strong>依次点击右眼瞳孔中心、右眼镜框下缘、左眼瞳孔中心、左眼镜框下缘</li>
-                    <li><strong>查看结果：</strong>系统会自动计算并显示双眼瞳高及差值</li>
-                    <li><strong>操作技巧：</strong>使用鼠标滚轮可放大缩小图片，放大后点击标记点更精准；点击标记点可拖动调整位置</li>
-                    <li><strong>注意事项：</strong>确保照片清晰，眼镜佩戴端正，面部正对镜头，避免角度倾斜影响测量精度</li>
-                </ol>
-            </div>
-        </body>
-        </html>`;
-        
-        printWindow.document.write(printContent);
-        printWindow.document.close();
-        
-        // 在新窗口加载完成后绘制图片
-        printWindow.onload = function() {
-            const printCtx = printWindow.document.getElementById('printCanvas').getContext('2d');
-            printCtx.drawImage(img, 0, 0, Elements.canvas.width, Elements.canvas.height);
-            
-            // 绘制标记点
-            if (currentState.calibrationPoints.left) {
-                printCtx.beginPath();
-                printCtx.arc(currentState.calibrationPoints.left.x, currentState.calibrationPoints.left.y, 8, 0, Math.PI * 2);
-                printCtx.fillStyle = '#4a90e2';
-                printCtx.fill();
-                
-                printCtx.beginPath();
-                printCtx.moveTo(currentState.calibrationPoints.left.x, currentState.calibrationPoints.left.y - 30);
-                printCtx.lineTo(currentState.calibrationPoints.left.x, currentState.calibrationPoints.left.y + 30);
-                printCtx.strokeStyle = '#4a90e2';
-                printCtx.lineWidth = 4;
-                printCtx.stroke();
-                
-                printCtx.fillStyle = '#4a90e2';
-                printCtx.font = '12px Arial';
-                printCtx.fillText('左基准', currentState.calibrationPoints.left.x + 6, currentState.calibrationPoints.left.y - 34);
-            }
-            
-            if (currentState.calibrationPoints.right) {
-                printCtx.beginPath();
-                printCtx.arc(currentState.calibrationPoints.right.x, currentState.calibrationPoints.right.y, 8, 0, Math.PI * 2);
-                printCtx.fillStyle = '#4a90e2';
-                printCtx.fill();
-                
-                printCtx.beginPath();
-                printCtx.moveTo(currentState.calibrationPoints.right.x, currentState.calibrationPoints.right.y - 30);
-                printCtx.lineTo(currentState.calibrationPoints.right.x, currentState.calibrationPoints.right.y + 30);
-                printCtx.strokeStyle = '#4a90e2';
-                printCtx.lineWidth = 4;
-                printCtx.stroke();
-                
-                printCtx.fillStyle = '#4a90e2';
-                printCtx.font = '12px Arial';
-                printCtx.fillText('右基准', currentState.calibrationPoints.right.x + 6, currentState.calibrationPoints.right.y - 34);
-            }
-            
-            if (currentState.measurementPoints.right.pupil) {
-                printCtx.beginPath();
-                printCtx.arc(currentState.measurementPoints.right.pupil.x, currentState.measurementPoints.right.pupil.y, 10, 0, Math.PI * 2);
-                printCtx.fillStyle = '#7ed321';
-                printCtx.fill();
-                
-                printCtx.strokeStyle = 'white';
-                printCtx.lineWidth = 2;
-                printCtx.stroke();
-                
-                printCtx.fillStyle = '#7ed321';
-                printCtx.font = '12px Arial';
-                printCtx.fillText('右瞳孔', currentState.measurementPoints.right.pupil.x + 10, currentState.measurementPoints.right.pupil.y + 4);
-            }
-            
-            if (currentState.measurementPoints.right.frameBottom) {
-                printCtx.beginPath();
-                printCtx.arc(currentState.measurementPoints.right.frameBottom.x, currentState.measurementPoints.right.frameBottom.y, 10, 0, Math.PI * 2);
-                printCtx.fillStyle = '#7ed321';
-                printCtx.fill();
-                
-                printCtx.strokeStyle = 'white';
-                printCtx.lineWidth = 2;
-                printCtx.stroke();
-                
-                printCtx.beginPath();
-                printCtx.moveTo(currentState.measurementPoints.right.frameBottom.x - 30, currentState.measurementPoints.right.frameBottom.y);
-                printCtx.lineTo(currentState.measurementPoints.right.frameBottom.x + 30, currentState.measurementPoints.right.frameBottom.y);
-                printCtx.strokeStyle = '#7ed321';
-                printCtx.lineWidth = 4;
-                printCtx.stroke();
-                
-                printCtx.fillStyle = '#7ed321';
-                printCtx.font = '12px Arial';
-                printCtx.fillText('右下缘', currentState.measurementPoints.right.frameBottom.x + 8, currentState.measurementPoints.right.frameBottom.y - 8);
-            }
-            
-            if (currentState.measurementPoints.left.pupil) {
-                printCtx.beginPath();
-                printCtx.arc(currentState.measurementPoints.left.pupil.x, currentState.measurementPoints.left.pupil.y, 10, 0, Math.PI * 2);
-                printCtx.fillStyle = '#f5a623';
-                printCtx.fill();
-                
-                printCtx.strokeStyle = 'white';
-                printCtx.lineWidth = 2;
-                printCtx.stroke();
-                
-                printCtx.fillStyle = '#f5a623';
-                printCtx.font = '12px Arial';
-                printCtx.fillText('左瞳孔', currentState.measurementPoints.left.pupil.x + 10, currentState.measurementPoints.left.pupil.y + 4);
-            }
-            
-            if (currentState.measurementPoints.left.frameBottom) {
-                printCtx.beginPath();
-                printCtx.arc(currentState.measurementPoints.left.frameBottom.x, currentState.measurementPoints.left.frameBottom.y, 10, 0, Math.PI * 2);
-                printCtx.fillStyle = '#f5a623';
-                printCtx.fill();
-                
-                printCtx.strokeStyle = 'white';
-                printCtx.lineWidth = 2;
-                printCtx.stroke();
-                
-                printCtx.beginPath();
-                printCtx.moveTo(currentState.measurementPoints.left.frameBottom.x - 30, currentState.measurementPoints.left.frameBottom.y);
-                printCtx.lineTo(currentState.measurementPoints.left.frameBottom.x + 30, currentState.measurementPoints.left.frameBottom.y);
-                printCtx.strokeStyle = '#f5a623';
-                printCtx.lineWidth = 4;
-                printCtx.stroke();
-                
-                printCtx.fillStyle = '#f5a623';
-                printCtx.font = '12px Arial';
-                printCtx.fillText('左下缘', currentState.measurementPoints.left.frameBottom.x + 8, currentState.measurementPoints.left.frameBottom.y - 8);
-            }
-            
-            // 触发打印
-            setTimeout(() => {
-                printWindow.print();
-            }, 500);
-        };
     }
 };
 
@@ -1394,8 +1157,6 @@ Elements.undoButton.addEventListener('click', StateManager.restorePreviousState)
 Elements.imageUpload.addEventListener('change', EventHandlers.handleImageUpload);
 Elements.uploadArea.addEventListener('click', () => Elements.imageUpload.click());
 Elements.reuploadButton.addEventListener('click', EventHandlers.handleReupload);
-Elements.resetAll.addEventListener('click', EventHandlers.handleResetAll);
-Elements.printResults.addEventListener('click', EventHandlers.handlePrintResults);
 Elements.calculateScale.addEventListener('click', () => {
     StateManager.saveState();
     Calculator.calculateScale();
@@ -1406,14 +1167,16 @@ Elements.zoomIn.addEventListener('click', ZoomManager.zoomIn);
 Elements.zoomOut.addEventListener('click', ZoomManager.zoomOut);
 Elements.resetZoom.addEventListener('click', ZoomManager.reset);
 
-// 画布事件
-Elements.canvas.addEventListener('click', EventHandlers.handleCanvasClick);
-Elements.canvas.addEventListener('wheel', EventHandlers.handleWheel);
+// 画布事件 - 支持触摸和鼠标
+Elements.canvas.addEventListener('touchstart', EventHandlers.handleCanvasClick);
+Elements.canvas.addEventListener('mousedown', EventHandlers.handleCanvasClick);
 
-// 拖拽功能
-Elements.canvas.addEventListener('mousedown', EventHandlers.handleDragStart);
+// 拖拽功能 - 支持触摸和鼠标
+Elements.canvas.addEventListener('touchstart', EventHandlers.handleDragStart);
 Elements.canvas.addEventListener('mousemove', EventHandlers.handleDragMove);
+Elements.canvas.addEventListener('touchmove', EventHandlers.handleDragMove);
 Elements.canvas.addEventListener('mouseup', EventHandlers.handleDragEnd);
+Elements.canvas.addEventListener('touchend', EventHandlers.handleDragEnd);
 Elements.canvas.addEventListener('mouseleave', EventHandlers.handleDragEnd);
 
 // 窗口大小变化时更新画布位置
