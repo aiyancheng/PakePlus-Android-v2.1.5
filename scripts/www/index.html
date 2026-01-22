@@ -585,6 +585,18 @@
             margin: 10px 0 5px 0;
             display: block;
         }
+        
+        /* PDF链接样式 */
+        .pdf-reference {
+            color: #1976d2;
+            text-decoration: underline;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        .pdf-reference:hover {
+            color: #0d5cb6;
+        }
     </style>
 </head>
 <body>
@@ -614,11 +626,11 @@
                     <p>        近视主要由<strong>遗传因素、环境因素和用眼习惯</strong>共同作用形成。</p>
                     <p>        遗传因素约占50%，环境因素如近距离用眼时间过长、户外活动不足等也起到重要作用。</p>
                     
-                    <h3>我国青少年近视现状</h3>
                     <div class="chart-container">
+                    <h3>我国青少年近视现状</h3>
                         <canvas id="myopiaBarChart"></canvas>
                     </div>
-                    <p><small>数据来源：《中国学生近视防控白皮书》（2024年），国家卫健委《全国儿童青少年近视情况调查》</small></p>
+                    <p><small>数据来源：国家卫健委《全国儿童青少年近视情况调查》（2025年）</small></p>
                     
                     <h3>核心观点</h3>
                     <p>科学护眼可有效延缓度数加深。通过合理的用眼习惯、充足的户外活动以及适当的医学干预，可以显著减缓近视发展速度。</p>
@@ -658,7 +670,7 @@
                 <div class="summary-box" id="summaryBox" style="display: none;">
                     <h3>📊 预测摘要</h3>
                     <p id="summaryText"></p>
-                    <p><strong>说明：</strong>本系统假设不干预情况下每年增长100度近视度数。不同防控措施包括：不干预（每年增长100度）、25%防控、50%防控、75%防控。数值显示为负数表示近视度数（如-350D表示350度近视）。</p>
+                    <p><strong>说明：</strong>本系统假设不干预情况下每年增长100度近视度数。不同防控措施包括：不干预（每年增长100度）、25%防控、50%防控、75%防控、90%防控。数值显示为负数表示近视度数（如-350D表示350度近视）。</p>
                 </div>
                 
                 <div class="result-section">
@@ -672,6 +684,7 @@
                                     <th>25%防控</th>
                                     <th>50%防控</th>
                                     <th>75%防控</th>
+                                    <th>90%防控</th>
                                 </tr>
                             </thead>
                             <tbody id="predictionBody">
@@ -829,16 +842,16 @@
             <!-- 防控方法 -->
             <div class="section" id="methods">
                 <h2>科学防控方法</h2>
-                <p>参考文献：《近视管理白皮书（2025）》<p>
-                <p>参考文献：《儿童青少年近视防控适宜技术指南（2025更新版）》<p>
+                <p><span class="pdf-reference" onclick="openPdf('ref1.pdf')">参考文献：《近视管理白皮书（2025）》</span></p>
+                <p><span class="pdf-reference" onclick="openPdf('ref2.pdf')">参考文献：《儿童青少年近视防控公共卫生综合干预技术指南》</span></p>
                 <div class="method-card">
                     <h3>光学矫正</h3>
                     <p><strong>角膜塑形镜：</strong>夜间佩戴，通过改变角膜曲率暂时降低近视度数，白天无需戴镜即可获得清晰视力。适合8岁以上、近视度数增长较快的儿童青少年。</p>
                     <p><strong>离焦框架镜：</strong>特殊设计的镜片，周边区域产生近视性离焦，抑制眼轴增长。适合不能接受角膜塑形镜的儿童。</p>
                     <p><strong>降对比度眼镜：</strong>柔和散射光线，降低视网膜接收到的对比度信号强度，从而减轻不良光刺激，有效减缓眼轴的增长速度。。</p>
                     <p><strong>离焦软镜：</strong>日抛型软性隐形眼镜，具有离焦控制效果，适合运动活跃的青少年。</p>
-                    <img src="images/jiaosu.jpg" alt="角膜塑形镜示意图" class="eye-image">
-                    <img src="images/duodian.jpg" alt="多点离焦镜片镜示意图" class="eye-image">
+                    <img src="images/jiaosu.jpg" alt="角膜塑形镜示意图" class="eye-image" style="margin-bottom: 10px; border: 2px solid #ccc; border-radius: 8px;">
+                    <img src="images/duodian.jpg" alt="多点离焦镜片镜示意图" class="eye-image" style="margin-bottom: 10px;">
                     <img src="images/diankuosan.jpg" alt="降对比度示意图" class="eye-image">
                 </div>
                 
@@ -1048,6 +1061,13 @@
                         borderColor: '#FFCD56',
                         backgroundColor: 'rgba(255, 205, 86, 0.1)',
                         tension: 0.4
+                    },
+                    {
+                        label: '90%防控',
+                        data: [],
+                        borderColor: '#8E44AD',
+                        backgroundColor: 'rgba(142, 68, 173, 0.1)',
+                        tension: 0.4
                     }
                 ]
             };
@@ -1055,6 +1075,7 @@
             // 存储关键数据用于摘要
             let finalNoControl = 0;
             let finalControl50 = 0;
+            let finalControl90 = 0;
             let yearsTo18 = 18 - currentAge;
 
             for (let age = currentAge; age <= 18; age++) {
@@ -1065,11 +1086,13 @@
                 const control25 = calculateDiopter(currentDiopter, yearsFromNow, 0.25);
                 const control50 = calculateDiopter(currentDiopter, yearsFromNow, 0.5);
                 const control75 = calculateDiopter(currentDiopter, yearsFromNow, 0.75);
+                const control90 = calculateDiopter(currentDiopter, yearsFromNow, 0.9);
 
                 // 记录18岁时的数据
                 if (age === 18) {
                     finalNoControl = noControl;
                     finalControl50 = control50;
+                    finalControl90 = control90;
                 }
 
                 // 添加到图表数据
@@ -1078,6 +1101,7 @@
                 chartData.datasets[1].data.push(control25);
                 chartData.datasets[2].data.push(control50);
                 chartData.datasets[3].data.push(control75);
+                chartData.datasets[4].data.push(control90);
 
                 // 创建表格行
                 const row = document.createElement('tr');
@@ -1096,17 +1120,21 @@
                     <td class="${getDiopterClass(control25)}">${control25} 度</td>
                     <td class="${getDiopterClass(control50)}">${control50} 度</td>
                     <td class="${getDiopterClass(control75)}">${control75} 度</td>
+                    <td class="${getDiopterClass(control90)}">${control90} 度</td>
                 `;
                 
                 tableBody.appendChild(row);
             }
 
             // 显示摘要
-            const preventedDiopter = Math.abs(currentDiopter) - Math.abs(finalControl50);
+            const preventedDiopter50 = Math.abs(currentDiopter) - Math.abs(finalControl50);
+            const preventedDiopter90 = Math.abs(currentDiopter) - Math.abs(finalControl90);
             document.getElementById('summaryText').innerHTML = `
-                如果从现在开始采取50%防控措施，到18岁时相比不干预可预防加深约<strong>${Math.abs(preventedDiopter)}</strong>度。
+                如果从现在开始采取50%防控措施，到18岁时相比不干预可预防加深约<strong>${Math.abs(preventedDiopter50)}</strong>度；
+                采取90%防控措施可预防加深约<strong>${Math.abs(preventedDiopter90)}</strong>度。
                 不干预情况下18岁时预计达到<strong>${Math.abs(finalNoControl)}</strong>度，
-                50%防控措施下预计达到<strong>${Math.abs(finalControl50)}</strong>度。
+                50%防控措施下预计达到<strong>${Math.abs(finalControl50)}</strong>度，
+                90%防控措施下预计达到<strong>${Math.abs(finalControl90)}</strong>度。
             `;
             document.getElementById('summaryBox').style.display = 'block';
 
@@ -1198,6 +1226,12 @@
             document.getElementById('glaucomaResult').innerHTML = `当前度数${diopter}度，青光风险：${risk}`;
         }
 
+        // 打开PDF文件
+        function openPdf(pdfFile) {
+            // 在新窗口中打开PDF文件
+            window.open(pdfFile, '_blank');
+        }
+
         // 初始化首页的柱状图
         function initMyopiaBarChart() {
             const ctx = document.getElementById('myopiaBarChart').getContext('2d');
@@ -1208,7 +1242,7 @@
                     labels: ['小学生', '初中生', '高中生'],
                     datasets: [{
                         label: '近视率 (%)',
-                        data: [36, 71.6, 81],
+                        data: [35.6, 71.1, 80.5],
                         backgroundColor: [
                             'rgba(54, 162, 235, 0.6)',
                             'rgba(255, 99, 132, 0.6)',
@@ -1228,7 +1262,6 @@
                     plugins: {
                         title: {
                             display: true,
-                            text: '我国不同学段青少年近视率统计',
                             font: {
                                 size: 14
                             }
@@ -1254,7 +1287,7 @@
                         x: {
                             title: {
                                 display: true,
-                                text: '学段'
+                                text: '我国不同学段青少年近视率统计'
                             }
                         }
                     }
@@ -1270,6 +1303,3 @@
     </script>
 </body>
 </html>
-
-
-
