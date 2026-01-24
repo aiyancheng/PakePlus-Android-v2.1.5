@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -22,7 +23,7 @@
         }
         
         .container {
-            max-width: 1000px; /* 限制最大宽度适应平板 */
+            max-width: 1200px; /* 限制最大宽度适应平板 */
             margin: 0 auto;
             background: white;
             border-radius: 10px;
@@ -618,7 +619,7 @@
                     <h3>我国青少年近视现状</h3>
                         <canvas id="myopiaBarChart"></canvas>
                     </div>
-                    <p><small>数据来源：《中国学生近视防控白皮书》（2024年），国家卫健委《全国儿童青少年近视情况调查》</small></p>
+                    <p><small>数据来源：国家卫健委《全国儿童青少年近视情况调查》（2025年）</small></p>
                     
                     <h3>核心观点</h3>
                     <p>科学护眼可有效延缓度数加深。通过合理的用眼习惯、充足的户外活动以及适当的医学干预，可以显著减缓近视发展速度。</p>
@@ -747,7 +748,7 @@
                         
                         <div class="risk-calculator">
                             <h4>青光眼风险计算器</h4>
-                            <p>请输入当前度数：<input type="number" id="glaucomaDiopter" min="0" max="2000" value="350"> 度</p>
+                            <p>请输入18岁预测度数：<input type="number" id="glaucomaDiopter" min="0" max="2000" value="350"> 度</p>
                             <button onclick="calculateGlaucomaRisk()">计算风险</button>
                             <p id="glaucomaResult"></p>
                         </div>
@@ -1218,8 +1219,8 @@
                 data: {
                     labels: ['小学生', '初中生', '高中生'],
                     datasets: [{
-                        label: '近视率 (%)',
-                        data: [36, 71.6, 81],
+                        label: '近视率（%） ',
+                        data: [35.6, 71.1, 80.5],
                         backgroundColor: [
                             'rgba(54, 162, 235, 0.6)',
                             'rgba(255, 99, 132, 0.6)',
