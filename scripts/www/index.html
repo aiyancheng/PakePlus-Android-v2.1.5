@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>青少年近视防控综合系统</title>
+    <title>永州爱眼城青少年近视防控综合系统</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         * {
@@ -585,24 +585,12 @@
             margin: 10px 0 5px 0;
             display: block;
         }
-        
-        /* PDF链接样式 */
-        .pdf-reference {
-            color: #1976d2;
-            text-decoration: underline;
-            cursor: pointer;
-            font-weight: bold;
-        }
-        
-        .pdf-reference:hover {
-            color: #0d5cb6;
-        }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>青少年近视防控综合系统</h1>
+            <h1>永州爱眼城青少年近视防控综合系统</h1>
             <h2 class="subtitle">科学护眼，可有效的延缓度数加深</h2>
         </header>
         
@@ -630,7 +618,7 @@
                     <h3>我国青少年近视现状</h3>
                         <canvas id="myopiaBarChart"></canvas>
                     </div>
-                    <p><small>数据来源：国家卫健委《全国儿童青少年近视情况调查》（2025年）</small></p>
+                    <p><small>数据来源：《中国学生近视防控白皮书》（2024年），国家卫健委《全国儿童青少年近视情况调查》</small></p>
                     
                     <h3>核心观点</h3>
                     <p>科学护眼可有效延缓度数加深。通过合理的用眼习惯、充足的户外活动以及适当的医学干预，可以显著减缓近视发展速度。</p>
@@ -842,8 +830,8 @@
             <!-- 防控方法 -->
             <div class="section" id="methods">
                 <h2>科学防控方法</h2>
-                <p><span class="pdf-reference" onclick="openPdf('ref1.pdf')">参考文献：《近视管理白皮书（2025）》</span></p>
-                <p><span class="pdf-reference" onclick="openPdf('ref2.pdf')">参考文献：《儿童青少年近视防控公共卫生综合干预技术指南》</span></p>
+                <p>参考文献：<a href="https://www.kdocs.cn/l/cv2JqWDCJzhZ" target="_blank">《近视管理白皮书（2025）》</a></p>
+                <p>参考文献：<a href="https://www.kdocs.cn/l/cfXQli7bq4H5" target="_blank">《儿童青少年近视防控适宜技术指南（2025更新版）》</a></p>
                 <div class="method-card">
                     <h3>光学矫正</h3>
                     <p><strong>角膜塑形镜：</strong>夜间佩戴，通过改变角膜曲率暂时降低近视度数，白天无需戴镜即可获得清晰视力。适合8岁以上、近视度数增长较快的儿童青少年。</p>
@@ -1074,7 +1062,6 @@
 
             // 存储关键数据用于摘要
             let finalNoControl = 0;
-            let finalControl50 = 0;
             let finalControl90 = 0;
             let yearsTo18 = 18 - currentAge;
 
@@ -1091,7 +1078,6 @@
                 // 记录18岁时的数据
                 if (age === 18) {
                     finalNoControl = noControl;
-                    finalControl50 = control50;
                     finalControl90 = control90;
                 }
 
@@ -1127,13 +1113,10 @@
             }
 
             // 显示摘要
-            const preventedDiopter50 = Math.abs(currentDiopter) - Math.abs(finalControl50);
-            const preventedDiopter90 = Math.abs(currentDiopter) - Math.abs(finalControl90);
+            const preventedDiopter = Math.abs(currentDiopter) - Math.abs(finalControl90);
             document.getElementById('summaryText').innerHTML = `
-                如果从现在开始采取50%防控措施，到18岁时相比不干预可预防加深约<strong>${Math.abs(preventedDiopter50)}</strong>度；
-                采取90%防控措施可预防加深约<strong>${Math.abs(preventedDiopter90)}</strong>度。
+                如果从现在开始采取90%防控措施，到18岁时相比不干预可预防加深约<strong>${Math.abs(preventedDiopter)}</strong>度。
                 不干预情况下18岁时预计达到<strong>${Math.abs(finalNoControl)}</strong>度，
-                50%防控措施下预计达到<strong>${Math.abs(finalControl50)}</strong>度，
                 90%防控措施下预计达到<strong>${Math.abs(finalControl90)}</strong>度。
             `;
             document.getElementById('summaryBox').style.display = 'block';
@@ -1226,12 +1209,6 @@
             document.getElementById('glaucomaResult').innerHTML = `当前度数${diopter}度，青光风险：${risk}`;
         }
 
-        // 打开PDF文件
-        function openPdf(pdfFile) {
-            // 在新窗口中打开PDF文件
-            window.open(pdfFile, '_blank');
-        }
-
         // 初始化首页的柱状图
         function initMyopiaBarChart() {
             const ctx = document.getElementById('myopiaBarChart').getContext('2d');
@@ -1242,7 +1219,7 @@
                     labels: ['小学生', '初中生', '高中生'],
                     datasets: [{
                         label: '近视率 (%)',
-                        data: [35.6, 71.1, 80.5],
+                        data: [36, 71.6, 81],
                         backgroundColor: [
                             'rgba(54, 162, 235, 0.6)',
                             'rgba(255, 99, 132, 0.6)',
@@ -1303,3 +1280,5 @@
     </script>
 </body>
 </html>
+
+
