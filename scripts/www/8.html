@@ -605,6 +605,156 @@
             }
         }
         
+        /* 进一步优化11寸平板的显示 */
+        @media (min-width: 769px) and (max-width: 1200px) {
+            /* 调整整体容器间距 */
+            .container {
+                padding: 10px;
+                max-width: 100%;
+            }
+            
+            /* 调整套餐卡片布局 */
+            .packages-section {
+                gap: 18px;
+            }
+            
+            /* 调整标题字体大小 */
+            .festival-header h1 {
+                font-size: 1.9rem;
+            }
+            
+            .festival-header p {
+                font-size: 1.05rem;
+            }
+            
+            .festival-tag {
+                font-size: 1rem;
+                padding: 8px 16px;
+            }
+            
+            /* 调整套餐名称大小 */
+            .package-name {
+                font-size: 1.45rem;
+            }
+            
+            .package-subtitle {
+                font-size: 1.05rem;
+            }
+            
+            /* 调整价格显示 */
+            .current-price {
+                font-size: 1.85rem;
+            }
+            
+            .original-price {
+                font-size: 1.05rem;
+            }
+            
+            .savings {
+                font-size: 0.95rem;
+                padding: 5px 11px;
+            }
+            
+            /* 调整功能列表 */
+            .features-title {
+                font-size: 1.25rem;
+            }
+            
+            .features-list li {
+                font-size: 0.98rem;
+                padding: 7px 0;
+            }
+            
+            .features-list li i {
+                font-size: 0.98rem;
+            }
+            
+            /* 调整免费框架 */
+            .free-frame {
+                font-size: 0.98rem;
+                padding: 10px;
+            }
+            
+            /* 调整升级选项 */
+            .upgrade-title {
+                font-size: 1.05rem;
+            }
+            
+            .upgrade-item {
+                font-size: 0.98rem;
+                padding: 5px 0;
+            }
+            
+            /* 调整柯达特殊信息 */
+            .koda-special-title {
+                font-size: 1.15rem;
+            }
+            
+            .koda-special-list li {
+                font-size: 0.98rem;
+            }
+            
+            .koda-highlight {
+                font-size: 1.05rem;
+                padding: 3px 7px;
+            }
+            
+            /* 调整对比表格 */
+            .comparison-title {
+                font-size: 1.55rem;
+            }
+            
+            .comparison-table th,
+            .comparison-table td {
+                font-size: 0.98rem;
+                padding: 11px 8px;
+            }
+            
+            .comparison-section {
+                padding: 22px;
+            }
+            
+            /* 调整页脚 */
+            .footer {
+                padding: 18px 12px;
+            }
+            
+            .contact-item {
+                font-size: 0.98rem;
+            }
+            
+            .contact-item i {
+                font-size: 1.05rem;
+            }
+        }
+        
+        /* 针对纵向模式的11寸平板优化 */
+        @media (min-width: 769px) and (max-width: 1200px) and (orientation: portrait) {
+            .packages-section {
+                grid-template-columns: repeat(1, 1fr);
+            }
+            
+            .package-3 {
+                grid-column: span 1;
+            }
+            
+            .festival-header h1 {
+                font-size: 1.7rem;
+            }
+            
+            .festival-header p {
+                font-size: 1rem;
+            }
+            
+            .package-name {
+                font-size: 1.4rem;
+            }
+            
+            .current-price {
+                font-size: 1.7rem;
+            }
+        }
+        
         /* 超大屏幕优化 */
         @media (min-width: 1600px) {
             .container {
@@ -673,10 +823,10 @@
                     <div class="package-subtitle">离焦设计抑制眼轴增长</div>
                     <div class="price-section">
                         <div>
-                            <div class="original-price">市场价：1180元</div>
-                            <div class="current-price">春节价：880元</div>
+                            <div class="original-price">市场价：1180</div>
+                            <div class="current-price">春节价：880</div>
                         </div>
-                        <div class="savings">立省698元</div>
+                        <div class="savings">立省698</div>
                     </div>
                 </div>
                 
@@ -718,10 +868,10 @@
                     <div class="package-subtitle">离焦加降对比度设计双效延缓近视</div>
                     <div class="price-section">
                         <div>
-                            <div class="original-price">市场价：2380元</div>
-                            <div class="current-price">春节价：1580元</div>
+                            <div class="original-price">市场价：2380</div>
+                            <div class="current-price">春节价：1580</div>
                         </div>
-                        <div class="savings">立省1198元</div>
+                        <div class="savings">立省1198</div>
                     </div>
                 </div>
                 
@@ -763,10 +913,10 @@
                     <div class="package-subtitle">临床验证效果 · 延缓近视加深59%</div>
                     <div class="price-section">
                         <div>
-                            <div class="original-price">市场价：3680元</div>
-                            <div class="current-price">春节价：2580元</div>
+                            <div class="original-price">市场价：3680</div>
+                            <div class="current-price">春节价：2580</div>
                         </div>
-                        <div class="savings">立省1698元</div>
+                        <div class="savings">立省1698</div>
                     </div>
                 </div>
                 
