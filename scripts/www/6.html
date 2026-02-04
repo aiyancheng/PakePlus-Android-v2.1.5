@@ -548,21 +548,21 @@
             }
         }
         
-        /* 平板特定优化 */
-        @media (max-width: 1100px) and (min-width: 768px) {
+        /* 12寸平板电脑优化 */
+        @media (max-width: 1200px) and (min-width: 992px) {
             .container {
                 max-width: 95%;
-                margin-top: 10px;
-                margin-bottom: 20px;
+                margin-top: 15px;
+                margin-bottom: 25px;
             }
             
             .main-content {
-                padding: 20px;
+                padding: 35px;
             }
             
             .card {
-                padding: 30px;
-                margin-bottom: 30px;
+                padding: 35px;
+                margin-bottom: 35px;
             }
             
             .card-image {
@@ -574,14 +574,73 @@
             }
             
             h1 {
-                font-size: 2.5rem;
+                font-size: 2.8rem;
+            }
+            
+            .subtitle {
+                font-size: 1.5rem;
+            }
+            
+            .intro p, .highlight p {
+                font-size: 1.3rem;
+            }
+            
+            .card h3 {
+                font-size: 1.8rem;
+            }
+            
+            .info-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .stat-number {
+                font-size: 3.5rem;
+            }
+            
+            .faq h3 {
+                font-size: 2.2rem;
+            }
+            
+            .faq-question {
+                padding: 22px;
+                font-size: 1.15rem;
+            }
+        }
+        
+        /* 11寸平板电脑优化 */
+        @media (max-width: 991px) and (min-width: 768px) {
+            .container {
+                max-width: 95%;
+                margin-top: 10px;
+                margin-bottom: 20px;
+            }
+            
+            .main-content {
+                padding: 25px;
+            }
+            
+            .card {
+                padding: 30px;
+                margin-bottom: 30px;
+            }
+            
+            .card-image {
+                height: 200px;
+            }
+            
+            .header-image img {
+                height: 200px;
+            }
+            
+            h1 {
+                font-size: 2.4rem;
             }
             
             .subtitle {
                 font-size: 1.4rem;
             }
             
-            .intro p, .highlight p, .action-box p {
+            .intro p, .highlight p {
                 font-size: 1.2rem;
             }
             
@@ -591,6 +650,19 @@
             
             .info-grid {
                 grid-template-columns: 1fr;
+            }
+            
+            .stat-number {
+                font-size: 3.2rem;
+            }
+            
+            .faq h3 {
+                font-size: 2rem;
+            }
+            
+            .faq-question {
+                padding: 20px;
+                font-size: 1.1rem;
             }
         }
         
@@ -673,7 +745,7 @@
     <div class="container">
         <header>
             <div class="header-content">
-                <h1>《中国近视前期管理专家共识(2025年)》</h1>
+                <h2>《中国近视前期管理专家共识(2025年)》</h2>
                 <p class="subtitle">让我们共同守护孩子的明亮未来</p>
             </div>
             
